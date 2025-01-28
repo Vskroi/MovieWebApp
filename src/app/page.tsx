@@ -1,14 +1,14 @@
 "use client";
 
+import { Content } from "@/components/content";
 import { Header } from "@/components/Header";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 export default function Home() {
   return (
   <>
-  <div className="">
+  <div className="w-full justify-center items-center inline-flex flex-col justify-center items-center">
   <Header/>
+  <Content/>
   </div>
 
   </>
