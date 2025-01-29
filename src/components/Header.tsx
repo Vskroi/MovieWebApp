@@ -36,7 +36,7 @@ export const Header = () => {
  }
   };
   return (
-    <div className={`${headerData.darkLigtTest === false ?  "bg-white" : "bg-black"} w-[1440px] h-[59px] px-4  justify-between inline-flex flex-col justify-center items-center sticky top-[0px]`}>
+    <div className={`${headerData.darkLigtTest === false ?  "bg-white" : "bg-black"} w-full h-[59px] px-4  justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}>
       <div className="justify-start items-center gap-2 flex">
         <div className="h-5 justify-start items-center gap-2 inline-flex">
           <img src="film.svg" />
@@ -44,7 +44,7 @@ export const Header = () => {
             Movie Z
           </p>
         </div>
-        <Button className="w-[97px] h-9 px-4 py-2 bg-white rounded-md shadow-sm border border-[#e3e3e7] justify-center items-center gap-2 inline-flex text-black">
+        <Button className="w-[97px] h-9 px-4 py-2 bg-white rounded-md shadow-sm border border-[#e3e3e7] justify-center items-center gap-2 inline-flex text-black hover:bg-gray-100">
           {" "}
           <img src="chevron-down.svg" alt="chevron-down" />
           Genre
