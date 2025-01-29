@@ -8,16 +8,8 @@ interface HeaderData {
   darkLigtTest: boolean
 }
 
-
-
 export const Header = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({ darkLightMode: "moon.svg", darkLigtTest:false});
-
- 
-
-
-
-
   const darkLightMode = () => {
   
     if(headerData.darkLigtTest === false){
@@ -25,14 +17,11 @@ export const Header = () => {
       ...prev,
       darkLightMode:  "whitemoon.svg" ,darkLigtTest:true
     }));
-  
- 
  }else{
   setHeaderData((prev) => ({
     ...prev,
     darkLightMode:  "moon.svg" ,darkLigtTest:false
   }));
-
  }
   };
   return (
