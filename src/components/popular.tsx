@@ -22,7 +22,7 @@ export const Popular = () => {
         `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=1`
       );
       const result = await response.json();
-     
+  
 
       setMovie(result.results);
     } catch (error) {

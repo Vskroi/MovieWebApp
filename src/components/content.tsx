@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 import { Popular } from "./popular";
 import { TopRated } from "./topRated"
 import { Header } from "./Header";
+import { Footer } from "./footer";
 interface Movie { 
   original_title: string;
   backdrop_path: string;
@@ -19,9 +20,10 @@ interface Movie {
   overview: string;
   vote_average: number;
 }
-type SetStepProps = { setStep: (step: string) => void };
 
-export const Content = ({ setStep }: SetStepProps) => {
+
+export const Content = () => {
+  const [step, setStep] = useState<string>('1');
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -53,7 +55,8 @@ export const Content = ({ setStep }: SetStepProps) => {
     <>
    
     <Header setStep={setStep}></Header>
-    
+    {step === '1' &&  <>
+  
       <div className="relative h-[600px] flex-col justify-start items-start gap-4 inline-flex">
         
         <Carousel className="">
@@ -106,6 +109,9 @@ export const Content = ({ setStep }: SetStepProps) => {
        <Popular></Popular>
      <TopRated></TopRated>
       </div>
+<Footer></Footer>
+      </>
+      }
     </>
   );
 };
