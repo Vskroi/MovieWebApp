@@ -9,10 +9,12 @@ interface Movie {
   title: string;
   overview: string;
   vote_average: number;
+  id:number;
+  genre_ids: number[];
 }
-export const Popular = () => {
+export const Popular = ({}) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
-  const [movie, setMovie] = useState<Movie[]>([]);
+  const [moviee, setMovie] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
 
@@ -41,7 +43,7 @@ export const Popular = () => {
   }
   return (
    <>
-  <Poster moviee={movie} GenreName="Popular"></Poster>
+  <Poster moviee={moviee} GenreName="Popular" PageName="Popular"></Poster>
       </>
   );
 };

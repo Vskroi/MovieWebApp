@@ -8,9 +8,11 @@ interface Movie {
   title: string;
   overview: string;
   vote_average: number;
+  id:number;
+  genre_ids: number[];
 }
 
-export const Upcoming = () => {
+export const Upcoming = ({}) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,7 +42,7 @@ export const Upcoming = () => {
   return (
    
     
-        <Poster moviee={movies} GenreName="Upcoming" /> 
+        <Poster moviee={movies} GenreName="Upcoming" PageName="Upcoming"/> 
 
     
   );

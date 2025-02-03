@@ -8,14 +8,17 @@ interface Movie {
   title: string;
   overview: string;
   vote_average: number;
+  id:number;
+  genre_ids: number[];
+
 }
-export const TopRated = () => {
+export const TopRated = ({}) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie ] = useState<Movie[]>([]);
   const [loading, setLoading ] = useState<boolean>(true);
 
 
-  const movieNowPlaying = async () => {
+  const movieTopRated = async () => {
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/top_rated?api_key=${key}&language=en-US&page=1`
@@ -31,7 +34,7 @@ export const TopRated = () => {
   };
 
   useEffect(() => {
-    movieNowPlaying();
+    movieTopRated();
   }, []);
 
   if (loading) {
@@ -39,7 +42,7 @@ export const TopRated = () => {
   }
   return (
    <>
-  <Poster moviee={movie} GenreName="Top Rated"></Poster>
+  <Poster moviee={movie} GenreName="Top Rated" PageName="topRated"></Poster>
       </>
   );
 };

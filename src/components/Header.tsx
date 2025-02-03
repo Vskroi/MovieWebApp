@@ -1,4 +1,3 @@
-import { strict } from "assert";
 import { GenreContent } from "./genreContent";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -29,12 +28,10 @@ interface Movie {
   title: string;
   overview: string;
   vote_average: number;
-  release_date:number
+  release_date: number;
 }
 
-type SetStepProps = { setStep: (step: string) => void };
-
-export const Header = ({ setStep }: SetStepProps) => {
+export const Header = ({ setStep }) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -45,6 +42,7 @@ export const Header = ({ setStep }: SetStepProps) => {
     movies: [],
     page: "1",
   });
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState("");
 
@@ -70,8 +68,11 @@ export const Header = ({ setStep }: SetStepProps) => {
       );
       const result = await response.json();
       setGenres(result.genres);
+      console.log(result);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,8 +87,13 @@ export const Header = ({ setStep }: SetStepProps) => {
   }, []);
 
   const handleGenreSelect = (genreId: string) => {
-    setSelectedGenre(genreId);
-    setStep("2");
+    const jsonData = JSON.stringify(2);
+    localStorage.setItem("genre", jsonData);
+    setStep(2);
+    const jsonGenreData = JSON.stringify(genreId);
+    localStorage.setItem("genreId", jsonGenreData);
+    const parsedData = localStorage.getItem("genreId");
+    setSelectedGenre(parsedData);
   };
 
   const moviegenre = async () => {
@@ -96,42 +102,46 @@ export const Header = ({ setStep }: SetStepProps) => {
         `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en&with_genres=${selectedGenre}&page=1`
       );
       const result = await response.json();
+      console.log(result);
       setHeaderData((prev) => ({
         ...prev,
         movies: result.results,
       }));
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSearchMovie = async (query: string) => {
     if (!query.trim()) return;
-    
+
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}&language=en-US&page=${headerData.page}`
       );
       const result = await response.json();
-      console.log("API response:", result);
+      console.log(result);
 
       const filteredMovies = result.results
         .filter((search: { original_title: string }) =>
-          search.original_title
-            .toLowerCase()
-            .startsWith(query.toLowerCase())
+          search.original_title.toLowerCase().startsWith(query.toLowerCase())
         )
         .slice(0, 4);
 
       console.log("Filtered movie titles:", filteredMovies);
       setMovie(filteredMovies);
-
-    
     } catch (error) {
       console.error("Error fetching movie data:", error);
     }
   };
-
+  useEffect(() => {
+    if (movie.length === 0) {
+      const jsonData = JSON.stringify(1);
+      localStorage.setItem("genre", jsonData);
+    }
+  }, [movie]);
   useEffect(() => {
     if (selectedGenre) {
       moviegenre();
@@ -212,70 +222,63 @@ export const Header = ({ setStep }: SetStepProps) => {
         {headerData.movies.length > 0 && (
           <GenreContent genres={genres} movies={headerData.movies} />
         )}
-        {searchValue.length !== 0 &&
-          
-<div
- className=
- "w-full max-w-[577px] h-fit p-3 bg-white rounded-lg border border-[#e3e3e7] flex-col justify-start items-start inline-flex absolute top-[57px] sm:w-full"
- >
- 
-  {movie && movie.length > 0 ? (
-    <div className="h-fit p-2 rounded-lg justify-start items-start block gap-y-8"> 
-      {movie.map((m, index) => (
-        <div key={index} className="flex gap-8 mb-4"> 
-          <img
-            className="w-[67px] h-[100px] relative rounded-md object-cover"
-            src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
-         
-          />
+        {searchValue.length !== 0 && (
+          <div className="w-full max-w-[577px] h-fit p-3 bg-white rounded-lg border border-[#e3e3e7] flex-col justify-start items-start inline-flex absolute top-[57px] sm:w-full">
+            {movie && movie.length > 0 ? (
+              <div className="h-fit p-2 rounded-lg justify-start items-start block gap-y-8">
+                {movie.map((m, index) => (
+                  <div key={index} className="flex gap-8 mb-4">
+                    <img
+                      className="w-[67px] h-[100px] relative rounded-md object-cover"
+                      src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
+                    />
 
-          <div className="grow flex-col justify-start items-start gap-3">
+                    <div className="grow flex-col justify-start items-start gap-3">
+                      <div className="self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
+                        <div className="text-zinc-950 text-xl font-semibold font-['Inter'] leading-7 truncate">
+                          {m.original_title}
+                        </div>
+                      </div>
 
-            <div className="self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
-              <div className="text-zinc-950 text-xl font-semibold font-['Inter'] leading-7 truncate">
-                {m.original_title}
+                      <div className="self-stretch h-[23px] flex items-center justify-start gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src="star.png"
+                            alt="star icon"
+                            className="w-4 h-4 text-yellow-500"
+                          />
+                          <span className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
+                            {m.vote_average.toString().slice(0, 3)}
+                          </span>
+                          <span className="text-zinc-500 text-xs font-normal font-['Inter'] leading-none">
+                            /10
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="self-stretch flex justify-between items-start gap-3">
+                        <div className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
+                          {m.release_date}
+                        </div>
+
+                        <div className="px-4 py-2 rounded-md flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100">
+                          <div className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
+                            See more
+                          </div>
+                          <div className="w-4 h-4 relative overflow-hidden"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-
-            
-            <div className="self-stretch h-[23px] flex items-center justify-start gap-3">
-              <div className="flex items-center gap-2.5">
-                <img src="star.png" alt="star icon" className="w-4 h-4 text-yellow-500" />
-                <span className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
-                  {m.vote_average.toString().slice(0, 3)}
-                </span>
-                <span className="text-zinc-500 text-xs font-normal font-['Inter'] leading-none">
-                  /10
-                </span>
+            ) : (
+              <div className="p-4 w-full text-center text-zinc-700 inline-flex flex-col justify-center items-center">
+                <p>No results found.</p>{" "}
               </div>
-            </div>
-
-          
-            <div className="self-stretch flex justify-between items-start gap-3">
-              <div className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
-                {m.release_date}
-              </div>
-
-           
-              <div className="px-4 py-2 rounded-md flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100">
-                <div className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
-                  See more
-                </div>
-                <div className="w-4 h-4 relative overflow-hidden">
-              
-                </div>
-              </div>
-            </div>
+            )}
           </div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div className="p-4 text-center text-zinc-700 inline-flex flex-col justify-center items-center"><p>No results found.</p> </div>
-  )}
-</div>
-
-          }
+        )}
       </div>
     </>
   );
