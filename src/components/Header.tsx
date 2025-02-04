@@ -2,7 +2,7 @@ import { GenreContent } from "./genreContent";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState, useEffect } from "react";
-
+import Link from "next/link";
 interface HeaderData {
   darkLightMode: string;
   darkLigthTest: boolean;
@@ -29,9 +29,15 @@ interface Movie {
   overview: string;
   vote_average: number;
   release_date: number;
+  id: number
+}
+import React from 'react';
+
+interface HeaderProps {
+  setStep: (step: number) => void; 
 }
 
-export const Header = ({ setStep }) => {
+export const Header: React.FC<HeaderProps> = ({ setStep }) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -68,7 +74,7 @@ export const Header = ({ setStep }) => {
       );
       const result = await response.json();
       setGenres(result.genres);
-      console.log(result);
+    
     } catch (error) {
       console.error(error);
     } finally {
@@ -102,7 +108,7 @@ export const Header = ({ setStep }) => {
         `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en&with_genres=${selectedGenre}&page=1`
       );
       const result = await response.json();
-      console.log(result);
+
       setHeaderData((prev) => ({
         ...prev,
         movies: result.results,
@@ -122,7 +128,7 @@ export const Header = ({ setStep }) => {
         `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}&language=en-US&page=${headerData.page}`
       );
       const result = await response.json();
-      console.log(result);
+
 
       const filteredMovies = result.results
         .filter((search: { original_title: string }) =>
@@ -130,10 +136,10 @@ export const Header = ({ setStep }) => {
         )
         .slice(0, 4);
 
-      console.log("Filtered movie titles:", filteredMovies);
+    
       setMovie(filteredMovies);
     } catch (error) {
-      console.error("Error fetching movie data:", error);
+      console.error( error);
     }
   };
   useEffect(() => {
@@ -227,7 +233,10 @@ export const Header = ({ setStep }) => {
             {movie && movie.length > 0 ? (
               <div className="h-fit p-2 rounded-lg justify-start items-start block gap-y-8">
                 {movie.map((m, index) => (
-                  <div key={index} className="flex gap-8 mb-4">
+                  <Link 
+                  href={`/detail/${m.id}`}
+                  key={index} className="flex gap-8 mb-4">
+                      
                     <img
                       className="w-[67px] h-[100px] relative rounded-md object-cover"
                       src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
@@ -235,7 +244,7 @@ export const Header = ({ setStep }) => {
 
                     <div className="grow flex-col justify-start items-start gap-3">
                       <div className="self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
-                        <div className="text-zinc-950 text-xl font-semibold font-['Inter'] leading-7 truncate">
+                        <div className="text-zinc-950 text-xl font-semibold leading-7 truncate">
                           {m.original_title}
                         </div>
                       </div>
@@ -247,29 +256,29 @@ export const Header = ({ setStep }) => {
                             alt="star icon"
                             className="w-4 h-4 text-yellow-500"
                           />
-                          <span className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
+                          <span className="text-zinc-950 text-sm font-medium leading-tight">
                             {m.vote_average.toString().slice(0, 3)}
                           </span>
-                          <span className="text-zinc-500 text-xs font-normal font-['Inter'] leading-none">
+                          <span className="text-zinc-500 text-xs font-normal leading-none">
                             /10
                           </span>
                         </div>
                       </div>
 
                       <div className="self-stretch flex justify-between items-start gap-3">
-                        <div className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
+                        <div className="text-zinc-950 text-sm font-medium leading-tight">
                           {m.release_date}
                         </div>
 
                         <div className="px-4 py-2 rounded-md flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100">
-                          <div className="text-zinc-950 text-sm font-medium font-['Inter'] leading-tight">
+                          <div className="text-zinc-950 text-sm font-medium leading-tight">
                             See more
                           </div>
                           <div className="w-4 h-4 relative overflow-hidden"></div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (

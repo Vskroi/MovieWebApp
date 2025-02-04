@@ -16,7 +16,7 @@ type Props = {
   }[],
 }
 export const GenreContent = ( {genres ,movies} : Props) => {
-console.log('sadsadfhdsuihfidsaufohgsyfgasdiyfgabsdifusdbauifybsaudfasdfsa', movies )
+
   return (
     <>
       <div className="h-fit w-fit felx justify-start items-start gap-1">

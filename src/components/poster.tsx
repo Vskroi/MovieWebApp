@@ -1,7 +1,17 @@
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 
 type Props = {
+
+};
+
+interface Genre {
+  id: number;
+  name: string;
+}
+interface PosterProps{
+  MovieDetail: (MovieDetail: number) => void; 
   moviee: {
     original_title: string;
     poster_path: string;
@@ -12,15 +22,10 @@ type Props = {
     genre_ids: number[];
   }[];
   GenreName: string;
-  PageName:string
-};
+  PageName:string;
 
-interface Genre {
-  id: number;
-  name: string;
 }
-
-export const Poster = ({ moviee, GenreName , PageName }: Props) => {
+export const Poster: React.FC<PosterProps>  = ({ moviee, GenreName , PageName ,MovieDetail}) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,31 +52,12 @@ export const Poster = ({ moviee, GenreName , PageName }: Props) => {
       setSelectedMovieId(parsedData)
     }
   }, []);
-
-
-
-
-
-
-  const onclickMovieDetails = (movieID: number) => {
-    setSelectedMovieId(movieID);
-    const jsonData = JSON.stringify(PageName);
-    localStorage.setItem("selectedMoviePageName", jsonData);
-    const jsonId = JSON.stringify(movieID);
-    localStorage.setItem("selectedMovieId", jsonId);
-  
-  };
-
   const selectedMovie = moviee.find((m) => m.id === selectedMovieId);
 
   const movieGenres = selectedMovie
     ? genres.filter((g) => selectedMovie.genre_ids.includes(g.id))
     : [];
- const onclickCloseDetails = () => {
 
-  const jsonId = JSON.stringify(null);
-  localStorage.setItem("selectedMovieId", jsonId);
- }
   return (
     <>
 =
@@ -85,9 +71,9 @@ export const Poster = ({ moviee, GenreName , PageName }: Props) => {
           <div className="w-[1440px] justify-center items-center relative">
             <div className="w-[1440px] flex justify-start items-start relative inline-flex justify-between mb-20">
               {moviee.slice(0, 5).map((m, index) => (
-                <div
+                <Link
                   key={index}
-                  onClick={() => onclickMovieDetails(m.id)}
+                  href={`/detail/${m.id}`}
                   className="h-[439px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
                 >
                   <img
@@ -119,14 +105,15 @@ export const Poster = ({ moviee, GenreName , PageName }: Props) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="flex justify-between">
               {moviee.slice(5, 10).map((m, index) => (
-                <div
+                <Link
+                href={`/detail/${m.id}`}
                   key={index}
-                  onClick={() => onclickMovieDetails(m.id)}
+                
                   className="h-[439px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
                 >
                   <img
@@ -158,7 +145,7 @@ export const Poster = ({ moviee, GenreName , PageName }: Props) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

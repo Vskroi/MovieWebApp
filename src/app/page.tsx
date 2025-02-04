@@ -4,12 +4,13 @@ import { Content } from "@/components/content";
 import { GenreContent } from "@/components/genreContent";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/Header";
-import { MovieDetails } from "@/components/movieDetails";
+
 
 
 export default function Home() {
-
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
   const [step, setStep] = useState<number>();
+  
   if(typeof window !== 'undefined'){
   useEffect(() => {
     const storedData = localStorage.getItem("genre");
@@ -19,12 +20,14 @@ export default function Home() {
 
     }
   }, [step]);  }
-  console.log('step'  , step)
+useEffect(() => {
+  console.log( "asdsadasfasdsdhigfbasiydfi")
+},[selectedMovieId])
   return (
     <div className="w-full justify-center items-center inline-flex flex-col justify-center items-center">
       <Header setStep={setStep}></Header>
-      {step === 1 && <Content></Content>}
-      <MovieDetails></MovieDetails>
+      {selectedMovieId == null  && <Content MovieDetail={setSelectedMovieId}></Content>}
+
       <Footer></Footer>
     </div>
   );
