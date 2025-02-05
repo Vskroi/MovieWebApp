@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-interface HeaderData {
+type HeaderData = {
   darkLightMode: string;
   darkLigthTest: boolean;
   ganreSearch: boolean;
@@ -17,27 +17,28 @@ interface HeaderData {
   }[];
 }
 
-interface Genre {
+type Genre = {
   id: string;
   name: string;
 }
 
-interface Movie {
+type Movie = {
   original_title: string;
   poster_path: string;
   title: string;
   overview: string;
   vote_average: number;
   release_date: number;
-  id: number
+  id: number;
 }
-import React from 'react';
+import React from "react";
 
-interface HeaderProps {
-  setStep: (step: number) => void; 
+type HeaderProps = {
+  setStep: (step: number) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ setStep }) => {
+export const Header = ({ setStep }: HeaderProps) => {
+
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -74,7 +75,6 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
       );
       const result = await response.json();
       setGenres(result.genres);
-    
     } catch (error) {
       console.error(error);
     } finally {
@@ -95,7 +95,8 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
   const handleGenreSelect = (genreId: string) => {
     const jsonData = JSON.stringify(2);
     localStorage.setItem("genre", jsonData);
-    setStep(2);
+    const step = 2
+    setStep(step);
     const jsonGenreData = JSON.stringify(genreId);
     localStorage.setItem("genreId", jsonGenreData);
     const parsedData = localStorage.getItem("genreId");
@@ -129,17 +130,15 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
       );
       const result = await response.json();
 
-
       const filteredMovies = result.results
         .filter((search: { original_title: string }) =>
           search.original_title.toLowerCase().startsWith(query.toLowerCase())
         )
         .slice(0, 4);
 
-    
       setMovie(filteredMovies);
     } catch (error) {
-      console.error( error);
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -162,17 +161,19 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
         } w-full h-[59px] px-4 justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}
       >
         <div className="justify-start items-center gap-2 flex">
-          <div className="h-5 justify-start items-center gap-2 inline-flex">
-            <img src="film.svg" alt="Logo" />
+          <Link  
+          href={`/`}
+          className="h-5 justify-start items-center gap-2 inline-flex">
+            <img src="../film.svg" alt="Logo" />
             <p className="text-indigo-700 text-base font-bold leading-tight tracking-tight">
               Movie Z
             </p>
-          </div>
+          </Link>
           <Button
             className="w-[97px] h-9 px-4 py-2 bg-white rounded-md shadow-sm border border-[#e3e3e7] justify-center items-center gap-2 inline-flex text-black hover:bg-gray-100"
             onClick={toggleGenreSearch}
           >
-            <img src="chevron-down.svg" alt="chevron-down" />
+            <img src="../chevron-down.svg" alt="chevron-down" />
             Genre
           </Button>
           <Input
@@ -187,7 +188,7 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
           >
             <img
               className="w-4 h-4 relative overflow-hidden"
-              src={headerData.darkLightMode}
+              src={`../${headerData.darkLightMode}`}
               alt="Dark/Light Mode"
             />
           </Button>
@@ -207,9 +208,10 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
             </div>
             <div className="h-[200px] w-[577px] justify-start items-start gap-4 inline-flex flex-wrap">
               {genres.map((genre) => (
-                <Button
+                <Link
+                href={`/genreIds/${genre.id}`}
                   key={genre.id}
-                  onClick={() => handleGenreSelect(genre.id)}
+          
                   className="pl-2.5 pr-1 py-0.5 rounded-full border border-[#e3e3e7] justify-center items-center gap-2 flex cursor-pointer hover:bg-gray-100 bg-white"
                 >
                   <div className="text-zinc-950 text-xs font-semibold leading-none">
@@ -217,9 +219,9 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
                   </div>
                   <img
                     className="w-4 h-4 relative overflow-hidden"
-                    src="vercelRight.svg"
+                    src="../vercelRight.svg"
                   />
-                </Button>
+                </Link>
               ))}
             </div>
           </div>
@@ -233,10 +235,11 @@ export const Header: React.FC<HeaderProps> = ({ setStep }) => {
             {movie && movie.length > 0 ? (
               <div className="h-fit p-2 rounded-lg justify-start items-start block gap-y-8">
                 {movie.map((m, index) => (
-                  <Link 
-                  href={`/detail/${m.id}`}
-                  key={index} className="flex gap-8 mb-4">
-                      
+                  <Link
+                    href={`/detail/${m.id}`}
+                    key={index}
+                    className="flex gap-8 mb-4"
+                  >
                     <img
                       className="w-[67px] h-[100px] relative rounded-md object-cover"
                       src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}

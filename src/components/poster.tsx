@@ -6,11 +6,11 @@ type Props = {
 
 };
 
-interface Genre {
+type Genre = {
   id: number;
   name: string;
 }
-interface PosterProps{
+type PosterProps = {
   MovieDetail: (MovieDetail: number) => void; 
   moviee: {
     original_title: string;
@@ -25,7 +25,7 @@ interface PosterProps{
   PageName:string;
 
 }
-export const Poster: React.FC<PosterProps>  = ({ moviee, GenreName , PageName ,MovieDetail}) => {
+export const Poster = ({ moviee, GenreName , PageName ,MovieDetail} : PosterProps) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,7 +60,7 @@ export const Poster: React.FC<PosterProps>  = ({ moviee, GenreName , PageName ,M
 
   return (
     <>
-=
+
         <div className="w-[1440px] flex-col relative inline-flex">
           <div className="flex gap-5">
             <div className="text-zinc-950 text-2xl font-semibold leading-loose relative left-[0px]">
@@ -88,7 +88,7 @@ export const Poster: React.FC<PosterProps>  = ({ moviee, GenreName , PageName ,M
                       </div>
                       <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                         <div className="flex">
-                          <img className="h-[20px]" src="star.png" alt="star" />
+                          <img className="h-[20px]" src="../star.png" alt="star" />
                           <span className="text-zinc-950 text-sm font-medium leading-tight">
                             {m.vote_average.toString().slice(0, 3)}
                           </span>
@@ -128,7 +128,7 @@ export const Poster: React.FC<PosterProps>  = ({ moviee, GenreName , PageName ,M
                       </div>
                       <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                         <div className="flex">
-                          <img className="h-[20px]" src="star.png" alt="star" />
+                          <img className="h-[20px]" src="../star.png" alt="star" />
                           <span className="text-zinc-950 text-sm font-medium leading-tight">
                             {m.vote_average.toString().slice(0, 3)}
                           </span>

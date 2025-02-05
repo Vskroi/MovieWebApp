@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { Header } from "./Header";
 import { Poster } from "./poster";
 
-interface Movie {
+type Movie = {
   moviePopular
   :{
     original_title: string;
@@ -51,10 +51,11 @@ interface Movie {
     genre_ids: number[];
   }[],
 }
-interface ContentProps{
-  MovieDetail: (MovieDetail: number | null) => void; 
-}
-export const Content:React.FC<ContentProps> = ({MovieDetail}) => {
+type ContentProps = {
+  MovieDetail: (selectedMovieId: number | null) => void;
+};
+
+export const Content = ({ MovieDetail }: ContentProps) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie>({
     movieNowPlaying:[],
@@ -199,8 +200,8 @@ useEffect(()=> {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="relative left-[30px]" />
-          <CarouselNext className="relative right-[30px]" />
+          <CarouselPrevious className="relative absolute left-[30px]" />
+          <CarouselNext className="relative absolute right-[30px]" />
         </Carousel>
       </div>
 

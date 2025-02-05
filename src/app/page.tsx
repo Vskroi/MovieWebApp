@@ -24,7 +24,7 @@ useEffect(() => {
   console.log( "asdsadasfasdsdhigfbasiydfi")
 },[selectedMovieId])
   return (
-    <div className="w-full justify-center items-center inline-flex flex-col justify-center items-center">
+    <div className="w-full inline-flex flex-col justify-center items-center">
       <Header setStep={setStep}></Header>
       {selectedMovieId == null  && <Content MovieDetail={setSelectedMovieId}></Content>}
 
