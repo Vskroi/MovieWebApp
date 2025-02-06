@@ -34,7 +34,7 @@ type Movie = {
 import React from "react";
 
 type HeaderProps = {
-  setStep: (step: number) => void;
+  setStep?: (step: number) => void;
 }
 
 export const Header = ({ setStep }: HeaderProps) => {
@@ -95,8 +95,7 @@ export const Header = ({ setStep }: HeaderProps) => {
   const handleGenreSelect = (genreId: string) => {
     const jsonData = JSON.stringify(2);
     localStorage.setItem("genre", jsonData);
-    const step = 2
-    setStep(step);
+    
     const jsonGenreData = JSON.stringify(genreId);
     localStorage.setItem("genreId", jsonGenreData);
     const parsedData = localStorage.getItem("genreId");
@@ -134,7 +133,7 @@ export const Header = ({ setStep }: HeaderProps) => {
         .filter((search: { original_title: string }) =>
           search.original_title.toLowerCase().startsWith(query.toLowerCase())
         )
-        .slice(0, 4);
+        .slice(0, 5);
 
       setMovie(filteredMovies);
     } catch (error) {
@@ -255,7 +254,7 @@ export const Header = ({ setStep }: HeaderProps) => {
                       <div className="self-stretch h-[23px] flex items-center justify-start gap-3">
                         <div className="flex items-center gap-2.5">
                           <img
-                            src="star.png"
+                            src="../star.png"
                             alt="star icon"
                             className="w-4 h-4 text-yellow-500"
                           />

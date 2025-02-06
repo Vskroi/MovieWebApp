@@ -5,12 +5,12 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Header } from "@/components/Header";
 
-interface Genre {
+type Genre = {
   id: number;
   name: string;
-}
+};
 
-interface Movie {
+type Movie = {
   original_title: string;
   poster_path: string;
   title: string;
@@ -20,9 +20,9 @@ interface Movie {
   genre_ids: number[];
   release_date: string;
   vote_count: number;
-}
+};
 
-interface MovieCredits {
+type MovieCredits = {
   cast: {
     id: number;
     name: string;
@@ -33,7 +33,7 @@ interface MovieCredits {
   crew: {
     name: string;
   };
-}
+};
 
 export default function Home() {
   const { movieId } = useParams<{ movieId: string }>();
@@ -43,6 +43,7 @@ export default function Home() {
   const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
   const [movieCredits, setMovieCredits] = useState<MovieCredits>();
   const [trailer, setTrailer] = useState<string | null>(null);
+  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const key = "115ff36ff2575f01537accc67c1e0fa8";
 
   const fetchMovies = async (category: string) => {
@@ -95,6 +96,19 @@ export default function Home() {
     }
   };
 
+  const fetchMovieSimilar = async (movieId: number) => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${key}&language=en-US&page=1`
+      );
+      const result = await response.json();
+
+      setSimilarMovies(result.results);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     if (!movieId) return;
 
@@ -121,6 +135,7 @@ export default function Home() {
     fetchData();
     fetchMovieCredits(movieIdInt);
     fetchMovieTrailer(movieIdInt);
+    fetchMovieSimilar(movieIdInt);
   }, [movieId]);
 
   const selectedMovie = movies.find((m) => m.id === selectedMovieId);
@@ -142,7 +157,7 @@ export default function Home() {
   return (
     <>
       <Header setStep={setStep}></Header>
-      <div className="w-full inline-flex flex-col justify-center items-center h-full p-8 bg-white rounded-lg shadow-lg">
+      <div className="w-full h-fit inline-flex flex-col justify-center items-center p-8 bg-white rounded-lg shadow-lg">
         <div className="h-[72px] w-[1080px] pr-3 justify-between items-center inline-flex">
           <div className="w-fit flex-col justify-start items-start gap-1 inline-flex">
             <div className="text-zinc-950 text-4xl font-bold leading-10">
@@ -182,24 +197,24 @@ export default function Home() {
           </div>
         </div>
         <div className="w-[1080px]  flex justify-between">
-        <img
-          className="w-[290px] h-[428px] object-cover mb-4"
-          src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
-        />
+          <img
+            className="w-[290px] h-[428px] object-cover mb-4"
+            src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
+          />
 
-        <iframe
-        className="w-[760px] h-[428px]"
-          src={`https://www.youtube.com/embed/${trailer}`}
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
-</div>
+          <iframe
+            className="w-[760px] h-[428px]"
+            src={`https://www.youtube.com/embed/${trailer}`}
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        </div>
         <div className="w-[1080px] h-[271px] flex-col justify-start items-start gap-5 inline-flex">
           <div className="flex gap-5">
             {movieGenres.map((g, index) => (
               <Link
                 href={`/detail/${g.id}`}
-                key={index}
+                key={`genreMovie${index}`}
                 className="h-5 justify-start items-start inline-flex"
               >
                 <div className="px-2.5 py-0.5 rounded-full border border-[#e3e3e7] justify-start items-start flex">
@@ -263,7 +278,66 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="w-[1080px] h-[440.38px] flex-col justify-start items-start gap-8 inline-flex overflow-hidden">
+          <div className="self-stretch justify-between items-start inline-flex">
+            <div className="w-[198px] text-zinc-950 text-2xl font-semibold leading-loose">
+              More like this
+            </div>
+            <div className="px-4 py-2 bg-white rounded-md justify-center items-center gap-2 flex">
+              <div className="text-zinc-950 text-sm font-medium  leading-tight">
+                See more
+              </div>
+              <div className="w-4 h-4 relative  overflow-hidden"></div>
+            </div>
+          </div>
+          <div className="w-[1080px] flex justify-start items-start relative inline-flex justify-between">
+            {similarMovies.slice(0, 5).map((m, index) => (
+              <Link
+                href={`/detail/${m.id}`}
+                key={`$similarMovie${index}`}
+                className="w-[190px] h-[372.38px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
+              >
+                <img
+                  className="w-[190px] h-[281.38px] relative"
+                  src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
+                  alt={m.title}
+                />
+                <div className="h-[87px] px-2 py-1 flex-col justify-start items-start inline-flex">
+                  <div className="self-stretch h-[23px] justify-start items-start gap-1 inline-flex">
+                    <div className="h-[18px] pt-0.5 justify-start items-center gap-2.5 flex">
+                      <div className="h-4 relative  overflow-hidden"></div>
+                    </div>
+                    <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
+                      <div className="flex">
+                      <img className="h-[20px]" src="../star.png" alt="star" />
+                        <span className="text-zinc-950 text-sm font-medium leading-tight">
+                        {
+  m.vote_average.toString().slice(0, 3)
+}
+                        </span>
+                        <span className="text-zinc-500 text-xs font-normal leading-none">
+                          /10
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="justify-center items-center gap-2.5 inline-flex">
+                    <div className="text-zinc-950 text-lg font-normal leading-7">
+                    {
+  m.original_title
+}
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
 }
+
+
+
