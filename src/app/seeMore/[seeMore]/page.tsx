@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/footer";
 
 export default function Home() {
   const { seeMore } = useParams<{ seeMore: string }>();
@@ -209,6 +210,7 @@ const[pageName , setPageName] = useState<string>()
       </div>
       </div>
     </div>
+    <Footer></Footer>
     </>
   );
 }

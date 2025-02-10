@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/footer";
 
 type Genre = {
   id: number;
@@ -309,11 +310,13 @@ export default function Home() {
                     </div>
                     <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                       <div className="flex">
-                      <img className="h-[20px]" src="../star.png" alt="star" />
+                        <img
+                          className="h-[20px]"
+                          src="../star.png"
+                          alt="star"
+                        />
                         <span className="text-zinc-950 text-sm font-medium leading-tight">
-                        {
-  m.vote_average.toString().slice(0, 3)
-}
+                          {m.vote_average.toString().slice(0, 3)}
                         </span>
                         <span className="text-zinc-500 text-xs font-normal leading-none">
                           /10
@@ -323,9 +326,7 @@ export default function Home() {
                   </div>
                   <div className="justify-center items-center gap-2.5 inline-flex">
                     <div className="text-zinc-950 text-lg font-normal leading-7">
-                    {
-  m.original_title
-}
+                      {m.original_title}
                       <br />
                     </div>
                   </div>
@@ -335,9 +336,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </>
   );
 }
-
-
-

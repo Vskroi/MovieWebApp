@@ -3,6 +3,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { useTheme } from "next-themes";
 type HeaderData = {
   darkLightMode: string;
   darkLigthTest: boolean;
@@ -32,12 +34,18 @@ type Movie = {
   id: number;
 }
 import React from "react";
+import { DarkModeButton } from "./layout/header/darkModeButton";
+import { ChevronDown } from "lucide-react";
+
 
 type HeaderProps = {
   setStep?: (step: number) => void;
 }
 
 export const Header = ({ setStep }: HeaderProps) => {
+
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie[]>([]);
@@ -57,9 +65,10 @@ export const Header = ({ setStep }: HeaderProps) => {
     setHeaderData((prev) => ({
       ...prev,
       darkLightMode: prev.darkLigthTest ? "moon.svg" : "whitemoon.svg",
-      darkLigthTest: !prev.darkLigthTest,
+      darkLigthTest: !prev.darkLigthTest, 
     }));
   };
+  
 
   const toggleGenreSearch = () => {
     setHeaderData((prev) => ({
@@ -90,6 +99,7 @@ export const Header = ({ setStep }: HeaderProps) => {
   useEffect(() => {
     fetchGenres();
     handleSearchMovie(searchValue);
+ 
   }, []);
 
   const handleGenreSelect = (genreId: string) => {
@@ -155,11 +165,11 @@ export const Header = ({ setStep }: HeaderProps) => {
   return (
     <>
       <div
-        className={`${
-          headerData.darkLigthTest ? "bg-black" : "bg-white"
-        } w-full h-[59px] px-4 justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}
+        className={`text-secondary-foreground ${isDark ? "bg-black" : "bg-white" } w-full h-[59px] px-4 justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}
+
       >
-        <div className="justify-start items-center gap-2 flex">
+  
+        <div className="flex w-[1440px] h-full inline-flex justify-between items-center gap-2 ">
           <Link  
           href={`/`}
           className="h-5 justify-start items-center gap-2 inline-flex">
@@ -168,11 +178,13 @@ export const Header = ({ setStep }: HeaderProps) => {
               Movie Z
             </p>
           </Link>
+          <div className="flex inline-flex justify-between items-center">
           <Button
-            className="w-[97px] h-9 px-4 py-2 bg-white rounded-md shadow-sm border border-[#e3e3e7] justify-center items-center gap-2 inline-flex text-black hover:bg-gray-100"
+            className={`w-[97px] mr-[30px] h-9 px-4 py-2 ${isDark ? "bg-black text-white" : "bg-white text-black" } rounded-md shadow-sm border border-[#e3e3e7] justify-center items-center gap-2 inline-flex hover:bg-gray-100`}
             onClick={toggleGenreSearch}
           >
-            <img src="../chevron-down.svg" alt="chevron-down" />
+
+            <ChevronDown></ChevronDown>
             Genre
           </Button>
           <Input
@@ -181,16 +193,9 @@ export const Header = ({ setStep }: HeaderProps) => {
             placeholder="Search..."
             className="w-[379px] h-9 px-3 bg-white rounded-lg border border-[#e3e3e7] justify-start items-center gap-2.5 inline-flex"
           />
-          <Button
-            onClick={darkLightMode}
-            className="w-9 h-9 bg-white p-[0px] rounded-[10px] shadow-sm border border-[#e3e3e7] gap-2 flex hover:bg-gray-100"
-          >
-            <img
-              className="w-4 h-4 relative overflow-hidden"
-              src={`../${headerData.darkLightMode}`}
-              alt="Dark/Light Mode"
-            />
-          </Button>
+          </div>
+
+  <DarkModeButton></DarkModeButton>
         </div>
         {headerData.ganreSearch && (
           <div className="w-[577px] h-[333px] p-5 bg-white rounded-lg border border-[#e3e3e7] flex-col justify-start items-start inline-flex">
@@ -223,6 +228,7 @@ export const Header = ({ setStep }: HeaderProps) => {
                 </Link>
               ))}
             </div>
+            
           </div>
         )}
 

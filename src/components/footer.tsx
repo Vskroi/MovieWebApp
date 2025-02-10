@@ -6,7 +6,7 @@ export const Footer = () => {
         <div className="self-stretch flex-col justify-start items-start gap-10 inline-flex">
           <div className="flex-col justify-start items-start gap-3 flex">
           <div className="h-5 justify-start items-center gap-2 inline-flex">
-            <img src="filmWhite.svg" alt="Logo" />
+            <img src="../filmWhite.svg" alt="Logo" />
             <p className="text-white text-base font-bold leading-tight tracking-tight">
               Movie Z
             </p>

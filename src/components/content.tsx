@@ -10,6 +10,8 @@ import {
 import { Button } from "./ui/button";
 import { Header } from "./Header";
 import { Poster } from "./poster";
+import { DarkModeButton } from "./layout/header/darkModeButton";
+
 
 type Movie = {
   moviePopular
@@ -65,7 +67,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
-
+  const [trailer, setTrailer] = useState<string | null>(null);
   const movieNowPlayingContent = async () => {
     try {
       const response = await fetch(
@@ -88,12 +90,12 @@ export const Content = ({ MovieDetail }: ContentProps) => {
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/upcoming?api_key=${key}&language=en-US&page=1`
       );
-
       const result = await response.json();
       setMovie((prev) => ({
         ...prev,
         movieUpcoming: result.results,
       }));
+    
 
     } catch (error) {
       console.log(error);
@@ -101,6 +103,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
       setLoading(false);
     }
   };
+
   const moviePopular = async () => {
     try {
       const response = await fetch(
@@ -142,6 +145,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
       const parsedData = JSON.parse(storedData);
       setSelectedMovieId(parsedData);
     }
+
   }, []);
 
   useEffect(() => {
@@ -192,9 +196,12 @@ useEffect(()=> {
                     <p className="w-[302px] text-neutral-50 text-[16px] font-normal leading-none">
                       {m.overview}
                     </p>
-                    <Button className="h-10 px-4 py-4 bg-zinc-100 rounded-md justify-center items-center gap-2 inline-flex text-zinc-900 text-sm font-medium leading-tigh hover:bg-gray-100">
+                  
+  <Button className="h-10 px-4 py-4 bg-zinc-100 rounded-md justify-center items-center gap-2 inline-flex text-zinc-900 text-sm font-medium leading-tigh hover:bg-gray-100">
                       <img src="play.svg" /> Watch Trailer
                     </Button>
+  
+
                   </div>
                 </div>
               </CarouselItem>
@@ -209,6 +216,7 @@ useEffect(()=> {
       <Poster moviee={movie.movieUpcoming} GenreName="Upcoming" PageName="Upcoming"MovieDetail={setSelectedMovieId}/> 
       <Poster moviee={movie.moviePopular} GenreName="Popular" PageName="Popular"MovieDetail={setSelectedMovieId}></Poster>
       <Poster moviee={movie.movieTopRated} GenreName="Top Rated" PageName="topRated" MovieDetail={setSelectedMovieId}></Poster>
+      <DarkModeButton></DarkModeButton>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-
+import { useTheme } from "next-themes";
 type Props = {};
 
 type Genre = {
@@ -28,6 +28,8 @@ export const Poster = ({
   PageName,
   MovieDetail,
 }: PosterProps) => {
+  const { setTheme, theme } = useTheme();
+  const isDark = theme === "dark";
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,14 +66,14 @@ export const Poster = ({
     <>
       <div className="w-[1440px] flex-col relative inline-flex">
         <div className="flex gap-5  w-[1440px] justify-between">
-          <div className="text-zinc-950 text-2xl font-semibold leading-loose relative left-[0px]">
+          <div className={`${isDark ? "text-white" : "text-black" } text-2xl font-semibold leading-loose relative left-[0px]`}>
             {GenreName}
           </div>
           <Link
             href={`/seeMore/${GenreName}`}
-            className="h-9 px-4 py-2 bg-white rounded-md justify-center items-center gap-2 inline-flex"
+            className={`h-9 px-4 py-2 ${isDark ? "bg-black text-white" : "bg-white text-black" } rounded-md justify-center items-center gap-2 inline-flex`}
           >
-            <div className="text-zinc-950 text-sm font-medium leading-tight">
+            <div className=" text-sm font-medium leading-tight">
               See more
             </div>
             <div className="w-4 h-4 relative overflow-hidden"><img src="arrow-right.svg" alt="" /></div>
@@ -83,7 +85,7 @@ export const Poster = ({
               <Link
                 key={index}
                 href={`/detail/${m.id}`}
-                className="h-[439px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
+                className={`h-[439px]  ${isDark ? "bg-black text-white"  : "bg-zinc-100 text-zinc-950" } rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden`}
               >
                 <img
                   className="w-[229.73px] h-[340px] relative"
@@ -102,7 +104,7 @@ export const Poster = ({
                           src="../star.png"
                           alt="star"
                         />
-                        <span className="text-zinc-950 text-sm font-medium leading-tight">
+                        <span className="text-sm font-medium leading-tight">
                           {m.vote_average.toString().slice(0, 3)}
                         </span>
                         <span className="text-zinc-500 font-normal leading-none">
@@ -112,7 +114,7 @@ export const Poster = ({
                     </div>
                   </div>
                   <div className="self-stretch justify-center items-center gap-2.5 inline-flex">
-                    <div className="grow shrink basis-0 text-zinc-950 text-lg font-normal leading-7">
+                    <div className="grow shrink basis-0  text-lg font-normal leading-7 .break-words">
                       {m.original_title}
                       <br />
                     </div>
@@ -123,11 +125,11 @@ export const Poster = ({
           </div>
           <div className="flex justify-between">
             {moviee.slice(5, 10).map((m, index) => (
-              <Link
-                href={`/detail/${m.id}`}
-                key={index}
-                className="h-[439px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
-              >
+            <Link
+            key={index}
+            href={`/detail/${m.id}`}
+            className={`h-[439px]  ${isDark ? "bg-black text-white"  : "bg-zinc-100 text-zinc-950" } rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden`}
+          >
                 <img
                   className="w-[229.73px] h-[340px] relative"
                   src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
@@ -145,7 +147,7 @@ export const Poster = ({
                           src="../star.png"
                           alt="star"
                         />
-                        <span className="text-zinc-950 text-sm font-medium leading-tight">
+                        <span className=" text-sm font-medium leading-tight">
                           {m.vote_average.toString().slice(0, 3)}
                         </span>
                         <span className="text-zinc-500 font-normal leading-none">
@@ -155,7 +157,7 @@ export const Poster = ({
                     </div>
                   </div>
                   <div className="self-stretch justify-center items-center gap-2.5 inline-flex">
-                    <div className="grow shrink basis-0 text-zinc-950 text-lg font-normal leading-7">
+                    <div className="grow w-[209px] shrink basis-0  text-lg font-normal leading-7 .break-words">
                       {m.original_title}
                       <br />
                     </div>
