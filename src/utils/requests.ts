@@ -9,9 +9,12 @@ export const getPopularMovies = async (page?: number) => {
     return data
 }
 export const fetchmovieUpcoming = async (page?: number) => {
+    try{
     const {data} =await instance.get(
         `/movie/upcoming?language=en-US&page=${page || 1}&api_key${API_KEY}`
-    )
-    
-    return data
+    ) ; return  data
+} catch (error) {
+    console.log(`Error fetching data`, error);
+  }
+  
 }

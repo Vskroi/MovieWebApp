@@ -7,20 +7,8 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/footer";
 import { useTheme } from "next-themes";
-type Genre = {
-  id: string;
-  name: string;
-};
+import { PaginationDemo } from "@/components/ui/dynamicPagination";
 
-type Movie = {
-  original_title: string;
-  poster_path: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-  release_date: number;
-  id: number;
-};
 
 export default function Home() {
   const { setTheme, theme } = useTheme();
@@ -130,6 +118,7 @@ if(loading){
                     className="w-4 h-4 relative overflow-hidden"
                     src={` ${selected.includes(genre.id.toString()) ?  '../_cross-1.svg' : '../vercelRight.svg'}`}
                   />
+             
                 </Button>
               ))}
             </div>
@@ -334,6 +323,7 @@ if(loading){
                  
                 
               </div>
+              < PaginationDemo></PaginationDemo>
           </div>
         </div>
       </div>

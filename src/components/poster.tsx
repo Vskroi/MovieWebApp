@@ -2,26 +2,9 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-type Props = {};
+import { PaginationDemo } from "./ui/dynamicPagination";
+import { ArrowRight } from "lucide-react";
 
-type Genre = {
-  id: number;
-  name: string;
-};
-type PosterProps = {
-  MovieDetail: (MovieDetail: number) => void;
-  moviee: {
-    original_title: string;
-    poster_path: string;
-    title: string;
-    overview: string;
-    vote_average: number;
-    id: number;
-    genre_ids: number[];
-  }[];
-  GenreName: string;
-  PageName: string;
-};
 export const Poster = ({
   moviee,
   GenreName,
@@ -56,39 +39,49 @@ export const Poster = ({
       setSelectedMovieId(parsedData);
     }
   }, []);
-  const selectedMovie = moviee.find((m) => m.id === selectedMovieId);
+  /*   const selectedMovie = moviee.find((m) => m.id === selectedMovieId);
 
   const movieGenres = selectedMovie
     ? genres.filter((g) => selectedMovie.genre_ids.includes(g.id))
     : [];
-
+ */
   return (
     <>
-      <div className="w-[1440px] flex-col relative inline-flex">
-        <div className="flex gap-5  w-[1440px] justify-between">
-          <div className={`${isDark ? "text-white" : "text-black" } text-2xl font-semibold leading-loose relative left-[0px]`}>
+      <div className="w-full sm:w-[1440px] flex-col relative inline-flex">
+        <div className="flex gap-5  w-[640px] sm:w-[1440px] justify-between">
+          <div
+            className={`${
+              isDark ? "text-white" : "text-black "
+            } text-2xl font-semibold leading-loose relative left-[0px]`}
+          >
             {GenreName}
           </div>
           <Link
             href={`/seeMore/${GenreName}`}
-            className={`h-9 px-4 py-2 ${isDark ? "bg-black text-white" : "bg-white text-black" } rounded-md justify-center items-center gap-2 inline-flex`}
+            className={`h-9 px-4 py-2 ${
+              isDark ? "bg-black text-white" : "bg-white text-black"
+            } rounded-md justify-center items-center gap-2 inline-flex`}
           >
-            <div className=" text-sm font-medium leading-tight">
-              See more
+            <div className=" text-sm font-medium leading-tight flex">See more
+            <ArrowRight></ArrowRight>
             </div>
-            <div className="w-4 h-4 relative overflow-hidden"><img src="arrow-right.svg" alt="" /></div>
+          
+         
+
           </Link>
         </div>
-        <div className="w-[1440px] justify-center items-center relative">
-          <div className="w-[1440px] flex justify-start items-start relative inline-flex justify-between mb-20">
+        <div className="w-full sm:w-[1440px] justify-center items-center relative">
+          <div className="w-full sm:w-[1440px] sm:flex justify-start items-start relative sm:inline-flex sm:justify-between mb-20">
             {moviee.slice(0, 5).map((m, index) => (
               <Link
                 key={index}
                 href={`/detail/${m.id}`}
-                className={`h-[439px]  ${isDark ? "bg-black text-white"  : "bg-zinc-100 text-zinc-950" } rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden`}
+                className={`h-[439px]  ${
+                  isDark ? "bg-black text-white" : "bg-zinc-100 text-zinc-950"
+                } rounded-lg flex-col justify-start items-start gap-1 sm:inline-flex overflow-hidden`}
               >
                 <img
-                  className="w-[229.73px] h-[340px] relative"
+                  className="w-full h-[340px] relative"
                   src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
                   alt={m.title}
                 />
@@ -114,7 +107,7 @@ export const Poster = ({
                     </div>
                   </div>
                   <div className="self-stretch justify-center items-center gap-2.5 inline-flex">
-                    <div className="grow shrink basis-0  text-lg font-normal leading-7 .break-words">
+                    <div className="grow shrink basis-0 text-lg font-normal leading-7 .break-words ">
                       {m.original_title}
                       <br />
                     </div>
@@ -123,15 +116,17 @@ export const Poster = ({
               </Link>
             ))}
           </div>
-          <div className="flex justify-between">
+          <div className="sm:flex justify-between">
             {moviee.slice(5, 10).map((m, index) => (
-            <Link
-            key={index}
-            href={`/detail/${m.id}`}
-            className={`h-[439px]  ${isDark ? "bg-black text-white"  : "bg-zinc-100 text-zinc-950" } rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden`}
-          >
+              <Link
+                key={index}
+                href={`/detail/${m.id}`}
+                className={`h-[439px]  ${
+                  isDark ? "bg-black text-white" : "bg-zinc-100 text-zinc-950"
+                } rounded-lg flex-col justify-start items-start gap-1 sm:inline-flex overflow-hidden`}
+              >
                 <img
-                  className="w-[229.73px] h-[340px] relative"
+                  className="w-full h-[340px] relative"
                   src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
                   alt={m.title}
                 />
@@ -147,7 +142,7 @@ export const Poster = ({
                           src="../star.png"
                           alt="star"
                         />
-                        <span className=" text-sm font-medium leading-tight">
+                        <span className=" text-sm  font-medium leading-tight">
                           {m.vote_average.toString().slice(0, 3)}
                         </span>
                         <span className="text-zinc-500 font-normal leading-none">
@@ -157,7 +152,7 @@ export const Poster = ({
                     </div>
                   </div>
                   <div className="self-stretch justify-center items-center gap-2.5 inline-flex">
-                    <div className="grow w-[209px] shrink basis-0  text-lg font-normal leading-7 .break-words">
+                    <div className="grow w-[209px] shrink basis-0  text-lg font-normal leading-7 .break-words ">
                       {m.original_title}
                       <br />
                     </div>

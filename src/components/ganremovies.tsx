@@ -1,16 +1,6 @@
 import { title } from "process";
 import { Button } from "./ui/button";
 
-type Props = {
-  moviee: {
-    original_title: string;
-    poster_path: string;
-    title: string;
-    overview: string;
-    vote_average: number;
-  }[];
-  GenreName: string;
-};
 
 export const GenreMovies = ({ moviee, GenreName }: Props) => {
   return (

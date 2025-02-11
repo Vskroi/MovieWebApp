@@ -5,42 +5,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useTheme } from "next-themes";
-type HeaderData = {
-  darkLightMode: string;
-  darkLigthTest: boolean;
-  ganreSearch: boolean;
-  page: string;
-  movies: {
-    original_title: string;
-    poster_path: string;
-    title: string;
-    overview: string;
-    vote_average: number;
-  }[];
-}
 
-type Genre = {
-  id: string;
-  name: string;
-}
 
-type Movie = {
-  original_title: string;
-  poster_path: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-  release_date: number;
-  id: number;
-}
+
 import React from "react";
 import { DarkModeButton } from "./layout/header/darkModeButton";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Search, SearchCheck } from "lucide-react";
 
 
-type HeaderProps = {
-  setStep?: (step: number) => void;
-}
+
 
 export const Header = ({ setStep }: HeaderProps) => {
 
@@ -49,7 +22,7 @@ export const Header = ({ setStep }: HeaderProps) => {
 
   const key = "115ff36ff2575f01537accc67c1e0fa8";
   const [movie, setMovie] = useState<Movie[]>([]);
-  const [genres, setGenres] = useState<Genre[]>([]);
+  const [genres, setGenres] = useState<genre[]>([]);
   const [headerData, setHeaderData] = useState<HeaderData>({
     darkLightMode: "moon.svg",
     darkLigthTest: false,
@@ -61,13 +34,7 @@ export const Header = ({ setStep }: HeaderProps) => {
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState("");
 
-  const darkLightMode = () => {
-    setHeaderData((prev) => ({
-      ...prev,
-      darkLightMode: prev.darkLigthTest ? "moon.svg" : "whitemoon.svg",
-      darkLigthTest: !prev.darkLigthTest, 
-    }));
-  };
+
   
 
   const toggleGenreSearch = () => {
@@ -102,15 +69,7 @@ export const Header = ({ setStep }: HeaderProps) => {
  
   }, []);
 
-  const handleGenreSelect = (genreId: string) => {
-    const jsonData = JSON.stringify(2);
-    localStorage.setItem("genre", jsonData);
-    
-    const jsonGenreData = JSON.stringify(genreId);
-    localStorage.setItem("genreId", jsonGenreData);
-    const parsedData = localStorage.getItem("genreId");
-    setSelectedGenre(parsedData);
-  };
+
 
   const moviegenre = async () => {
     try {
@@ -169,7 +128,7 @@ export const Header = ({ setStep }: HeaderProps) => {
 
       >
   
-        <div className="flex w-[1440px] h-full inline-flex justify-between items-center gap-2 ">
+        <div className="flex w-[640px] sm:w-[1440px] h-full inline-flex justify-between items-center gap-2 ">
           <Link  
           href={`/`}
           className="h-5 justify-start items-center gap-2 inline-flex">
@@ -187,11 +146,14 @@ export const Header = ({ setStep }: HeaderProps) => {
             <ChevronDown></ChevronDown>
             Genre
           </Button>
+       
           <Input
+    
+          src="search.svg"
             onChange={onSearchValueChange}
             value={searchValue}
             placeholder="Search..."
-            className="w-[379px] h-9 px-3 bg-white rounded-lg border border-[#e3e3e7] justify-start items-center gap-2.5 inline-flex"
+            className="w-[379px] h-9 px-3 bg-white rounded-lg border border-[#e3e3e7] justify-start items-center gap-2.5 inline-flex hidden sm:block"
           />
           </div>
 
@@ -252,7 +214,7 @@ export const Header = ({ setStep }: HeaderProps) => {
 
                     <div className="grow flex-col justify-start items-start gap-3">
                       <div className="self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
-                        <div className="text-zinc-950 text-xl font-semibold leading-7 truncate">
+                        <div className="text-zinc-950 w-[350px] text-xl font-semibold leading-7 truncate .break-words">
                           {m.original_title}
                         </div>
                       </div>

@@ -6,35 +6,7 @@ import { useParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/footer";
 
-type Genre = {
-  id: number;
-  name: string;
-};
 
-type Movie = {
-  original_title: string;
-  poster_path: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-  id: number;
-  genre_ids: number[];
-  release_date: string;
-  vote_count: number;
-};
-
-type MovieCredits = {
-  cast: {
-    id: number;
-    name: string;
-    character: string;
-    profile_path: string;
-    known_for_department: string;
-  }[];
-  crew: {
-    name: string;
-  };
-};
 
 export default function Home() {
   const { movieId } = useParams<{ movieId: string }>();

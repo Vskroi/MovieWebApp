@@ -10,60 +10,16 @@ import {
 import { Button } from "./ui/button";
 import { Header } from "./Header";
 import { Poster } from "./poster";
-import { DarkModeButton } from "./layout/header/darkModeButton";
-
-
-type Movie = {
-  moviePopular
-  :{
-    original_title: string;
-  poster_path: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-  id:number;
-  genre_ids: number[];
-  }[],
-  movieUpcoming:{
-    original_title: string;
-  poster_path: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-  id:number;
-  genre_ids: number[];
-  }[],
-  movieNowPlaying:{
-    original_title: string;
-  poster_path: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-  id:number;
-  genre_ids: number[];
-  backdrop_path:string;
-  }[],
-  movieTopRated:{
-    original_title: string;
-    poster_path: string;
-    title: string;
-    overview: string;
-    vote_average: number;
-    id:number;
-    genre_ids: number[];
-  }[],
-}
-type ContentProps = {
-  MovieDetail: (selectedMovieId: number | null) => void;
-};
+import { Play } from "next/font/google";
+import { PlayIcon } from "lucide-react";
 
 export const Content = ({ MovieDetail }: ContentProps) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
-  const [movie, setMovie] = useState<Movie>({
-    movieNowPlaying:[],
-    movieUpcoming:[],
-    moviePopular:[],
-    movieTopRated:[],
+  const [movie, setMovie] = useState<allMovie>({
+    movieNowPlaying: [],
+    movieUpcoming: [],
+    moviePopular: [],
+    movieTopRated: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
@@ -74,7 +30,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
         `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1`
       );
       const result = await response.json();
-     
+
       setMovie((prev) => ({
         ...prev,
         movieNowPlaying: result.results,
@@ -95,8 +51,6 @@ export const Content = ({ MovieDetail }: ContentProps) => {
         ...prev,
         movieUpcoming: result.results,
       }));
-    
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -110,7 +64,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
         `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=1`
       );
       const result = await response.json();
-  
+
       setMovie((prev) => ({
         ...prev,
         moviePopular: result.results,
@@ -127,7 +81,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
         `https://api.themoviedb.org/3/movie/top_rated?api_key=${key}&language=en-US&page=1`
       );
       const result = await response.json();
-      
+
       setMovie((prev) => ({
         ...prev,
         movieTopRated: result.results,
@@ -145,18 +99,17 @@ export const Content = ({ MovieDetail }: ContentProps) => {
       const parsedData = JSON.parse(storedData);
       setSelectedMovieId(parsedData);
     }
-
   }, []);
 
   useEffect(() => {
     movieNowPlayingContent();
-    movieUpcoming()
-    moviePopular()
-    movieTopRated()
+    movieUpcoming();
+    moviePopular();
+    movieTopRated();
   }, []);
-useEffect(()=> {
-  MovieDetail(selectedMovieId)
-},[selectedMovieId])
+  useEffect(() => {
+    MovieDetail(selectedMovieId);
+  }, [selectedMovieId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -177,7 +130,7 @@ useEffect(()=> {
                     loading="lazy"
                     sizes="100vw"
                   />
-                  <div className="h-[264px] w-[404px] absolute top-[202px] left-[140px] text-white flex-col justify-start items-start gap-4 inline-flex">
+                  <div className="h-[264px] w-[404px] absolute sm:top-[202px] sm:left-[140px] text-white flex-col justify-start items-start gap-4 inline-flex">
                     <div className="w-[404px] text-white text-base font-normal leading-normal">
                       Now Playing:
                     </div>
@@ -196,12 +149,10 @@ useEffect(()=> {
                     <p className="w-[302px] text-neutral-50 text-[16px] font-normal leading-none">
                       {m.overview}
                     </p>
-                  
-  <Button className="h-10 px-4 py-4 bg-zinc-100 rounded-md justify-center items-center gap-2 inline-flex text-zinc-900 text-sm font-medium leading-tigh hover:bg-gray-100">
-                      <img src="play.svg" /> Watch Trailer
-                    </Button>
-  
 
+                    <Button className="h-10 px-4 py-4 bg-zinc-100 rounded-md justify-center items-center gap-2 inline-flex text-zinc-900 text-sm font-medium leading-tigh hover:bg-gray-100">
+                      <PlayIcon></PlayIcon> Watch Trailer
+                    </Button>
                   </div>
                 </div>
               </CarouselItem>
@@ -212,11 +163,25 @@ useEffect(()=> {
         </Carousel>
       </div>
 
-      <div className="w-[1440px] relative flex-col justify-start items-start gap-4 inline-flex">
-      <Poster moviee={movie.movieUpcoming} GenreName="Upcoming" PageName="Upcoming"MovieDetail={setSelectedMovieId}/> 
-      <Poster moviee={movie.moviePopular} GenreName="Popular" PageName="Popular"MovieDetail={setSelectedMovieId}></Poster>
-      <Poster moviee={movie.movieTopRated} GenreName="Top Rated" PageName="topRated" MovieDetail={setSelectedMovieId}></Poster>
-      <DarkModeButton></DarkModeButton>
+      <div className="w-[640px] sm:w-[1440px] relative flex-col justify-start items-start gap-4 inline-flex mb-12">
+        <Poster
+          moviee={movie.movieUpcoming}
+          GenreName="Upcoming"
+          PageName="Upcoming"
+          MovieDetail={setSelectedMovieId}
+        />
+        <Poster
+          moviee={movie.moviePopular}
+          GenreName="Popular"
+          PageName="Popular"
+          MovieDetail={setSelectedMovieId}
+        ></Poster>
+        <Poster
+          moviee={movie.movieTopRated}
+          GenreName="Top Rated"
+          PageName="topRated"
+          MovieDetail={setSelectedMovieId}
+        ></Poster>
       </div>
     </>
   );
