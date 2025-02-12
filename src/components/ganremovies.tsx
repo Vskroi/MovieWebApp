@@ -33,7 +33,7 @@ export const GenreMovies = ({ moviee, GenreName }: Props) => {
                   <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                     <div className="flex">
                       <img className="h-[20px]" src="star.png" alt="star" />
-                      <span className="text-zinc-950 text-sm font-medium leading-tight">
+                      <span className="text-zinc-950 text-xl font-medium leading-tight">
                         {m.vote_average.toString().slice(0, 3)}
                       </span>
                       <span className="text-zinc-500 font-normal leading-none">
@@ -71,7 +71,7 @@ export const GenreMovies = ({ moviee, GenreName }: Props) => {
                   <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                     <div className="flex">
                       <img className="h-[20px]" src="star.png" alt="star" />
-                      <span className="text-zinc-950 text-sm font-medium leading-tight">
+                      <span className="text-zinc-950 text-xl font-medium leading-tight">
                         {m.vote_average.toString().slice(0, 3)}
                       </span>
                       <span className="text-zinc-500 font-normal leading-none">
@@ -109,7 +109,7 @@ export const GenreMovies = ({ moviee, GenreName }: Props) => {
                   <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                     <div className="flex">
                       <img className="h-[20px]" src="star.png" alt="star" />
-                      <span className="text-zinc-950 text-sm font-medium leading-tight">
+                      <span className="text-zinc-950 text-xl font-medium leading-tight">
                         {m.vote_average.toString().slice(0, 3)}
                       </span>
                       <span className="text-zinc-500 font-normal leading-none">
@@ -147,7 +147,7 @@ export const GenreMovies = ({ moviee, GenreName }: Props) => {
                   <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
                     <div className="flex">
                       <img className="h-[20px]" src="star.png" alt="star" />
-                      <span className="text-zinc-950 text-sm font-medium leading-tight">
+                      <span className="text-zinc-950 text-xl font-medium leading-tight">
                         {m.vote_average.toString().slice(0, 3)}
                       </span>
                       <span className="text-zinc-500 font-normal leading-none">

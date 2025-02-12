@@ -86,6 +86,7 @@ export default function Home() {
     if (!movieId) return;
 
     const movieIdInt = parseInt(movieId, 10);
+
     setSelectedMovieId(movieIdInt);
 
     fetchGenres();

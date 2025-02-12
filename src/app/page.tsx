@@ -1,7 +1,6 @@
 "use client";
 import { useState , useEffect} from "react";
 import { Content } from "@/components/content";
-import { GenreContent } from "@/components/genreContent";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/Header";
 

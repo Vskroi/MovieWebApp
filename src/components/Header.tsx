@@ -11,12 +11,13 @@ import { useTheme } from "next-themes";
 import React from "react";
 import { DarkModeButton } from "./layout/header/darkModeButton";
 import { ChevronDown, Search, SearchCheck } from "lucide-react";
+import { SearchInput } from "./search";
 
 
 
 
 export const Header = ({ setStep }: HeaderProps) => {
-
+  const [isActiveSearch, setIsActiveSearch] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -124,11 +125,11 @@ export const Header = ({ setStep }: HeaderProps) => {
   return (
     <>
       <div
-        className={`text-secondary-foreground ${isDark ? "bg-black" : "bg-white" } w-full h-[59px] px-4 justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}
+        className={` ${isDark ? "bg-black" : "bg-white" } w-full h-[59px] px-4 justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}
 
       >
   
-        <div className="flex w-[640px] sm:w-[1440px] h-full inline-flex justify-between items-center gap-2 ">
+        <div className="flex w-full xl:w-[1440px] h-full inline-flex justify-between items-center gap-2 ">
           <Link  
           href={`/`}
           className="h-5 justify-start items-center gap-2 inline-flex">
@@ -139,7 +140,7 @@ export const Header = ({ setStep }: HeaderProps) => {
           </Link>
           <div className="flex inline-flex justify-between items-center">
           <Button
-            className={`w-[97px] mr-[30px] h-9 px-4 py-2 ${isDark ? "bg-black text-white" : "bg-white text-black" } rounded-md shadow-sm border border-[#e3e3e7] justify-center items-center gap-2 inline-flex hover:bg-gray-100`}
+            className={`w-[97px] mr-[30px] h-9 px-4 py-2 ${isDark ? "bg-black text-white" : "bg-white text-black" } rounded-md shadow-xl border border-[#e3e3e7] justify-center items-center gap-2 inline-flex hover:bg-gray-100`}
             onClick={toggleGenreSearch}
           >
 
@@ -147,14 +148,11 @@ export const Header = ({ setStep }: HeaderProps) => {
             Genre
           </Button>
        
-          <Input
-    
-          src="search.svg"
-            onChange={onSearchValueChange}
+     
+          <SearchInput  onChange={onSearchValueChange}
             value={searchValue}
-            placeholder="Search..."
-            className="w-[379px] h-9 px-3 bg-white rounded-lg border border-[#e3e3e7] justify-start items-center gap-2.5 inline-flex hidden sm:block"
-          />
+            isActiveSearch={isActiveSearch}
+            setIsActiveSearch={setIsActiveSearch}/>
           </div>
 
   <DarkModeButton></DarkModeButton>
@@ -198,7 +196,7 @@ export const Header = ({ setStep }: HeaderProps) => {
           <GenreContent genres={genres} movies={headerData.movies} />
         )}
         {searchValue.length !== 0 && (
-          <div className="w-full max-w-[577px] h-fit p-3 bg-white rounded-lg border border-[#e3e3e7] flex-col justify-start items-start inline-flex absolute top-[57px] sm:w-full">
+          <div className="w-full max-w-[577px] h-fit p-3 bg-white rounded-lg border border-[#e3e3e7] flex-col justify-start items-start inline-flex absolute top-[57px] xl:w-full">
             {movie && movie.length > 0 ? (
               <div className="h-fit p-2 rounded-lg justify-start items-start block gap-y-8">
                 {movie.map((m, index) => (
@@ -213,35 +211,35 @@ export const Header = ({ setStep }: HeaderProps) => {
                     />
 
                     <div className="grow flex-col justify-start items-start gap-3">
-                      <div className="self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
-                        <div className="text-zinc-950 w-[350px] text-xl font-semibold leading-7 truncate .break-words">
+                    
+                        <div className="text-zinc-950 w-[350px] text-xl font-semibold leading-7 truncate .break-words self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
                           {m.original_title}
                         </div>
-                      </div>
+                 
 
-                      <div className="self-stretch h-[23px] flex items-center justify-start gap-3">
-                        <div className="flex items-center gap-2.5">
+
+                        <div className="flex items-center gap-2.5 self-stretch h-[23px] flex items-center justify-start gap-3">
                           <img
                             src="../star.png"
                             alt="star icon"
                             className="w-4 h-4 text-yellow-500"
                           />
-                          <span className="text-zinc-950 text-sm font-medium leading-tight">
+                          <span className="text-zinc-950 text-xl font-medium leading-tight">
                             {m.vote_average.toString().slice(0, 3)}
                           </span>
                           <span className="text-zinc-500 text-xs font-normal leading-none">
                             /10
                           </span>
                         </div>
-                      </div>
+            
 
                       <div className="self-stretch flex justify-between items-start gap-3">
-                        <div className="text-zinc-950 text-sm font-medium leading-tight">
+                        <div className="text-zinc-950 text-xl font-medium leading-tight">
                           {m.release_date}
                         </div>
 
                         <div className="px-4 py-2 rounded-md flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100">
-                          <div className="text-zinc-950 text-sm font-medium leading-tight">
+                          <div className="text-zinc-950 text-xl font-medium leading-tight">
                             See more
                           </div>
                           <div className="w-4 h-4 relative overflow-hidden"></div>

@@ -7,14 +7,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "./ui/button";
-import { Header } from "./Header";
+
 import { Poster } from "./poster";
-import { Play } from "next/font/google";
-import { PlayIcon } from "lucide-react";
+
+import { useTheme } from "next-themes";
+import { Slide } from "./backdropMovie";
 
 export const Content = ({ MovieDetail }: ContentProps) => {
   const key = "115ff36ff2575f01537accc67c1e0fa8";
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [movie, setMovie] = useState<allMovie>({
     movieNowPlaying: [],
     movieUpcoming: [],
@@ -117,53 +119,21 @@ export const Content = ({ MovieDetail }: ContentProps) => {
 
   return (
     <>
-      <div className="relative h-[600px] flex-col justify-start items-start gap-4 inline-flex">
-        <Carousel className="">
+      <div className="relative h-[610px] xl:h-[600px] flex-col justify-start items-start gap-4 inline-flex">
+        <Carousel className={`${isDark ? 'text-white' : 'text-black'} h-full`}>
           <CarouselContent>
             {movie.movieNowPlaying.slice(0, 10).map((m, index) => (
-              <CarouselItem key={index}>
-                <div className="relative w-full h-[600px] overflow-hidden cursor-pointer">
-                  <img
-                    className="relative"
-                    src={`https://image.tmdb.org/t/p/original/${m.backdrop_path}`}
-                    alt={m.title}
-                    loading="lazy"
-                    sizes="100vw"
-                  />
-                  <div className="h-[264px] w-[404px] absolute sm:top-[202px] sm:left-[140px] text-white flex-col justify-start items-start gap-4 inline-flex">
-                    <div className="w-[404px] text-white text-base font-normal leading-normal">
-                      Now Playing:
-                    </div>
-                    <div className="flex-col justify-start items-start flex">
-                      <p className="w-[404px] text-white text-4xl font-bold font-['Inter'] leading-10">
-                        {m.original_title}
-                      </p>
-                      <p className="flex text-neutral-50 text-lg font-semibold leading-7">
-                        <img src="star.png" alt="" />
-                        {m.vote_average.toString().slice(0, 3)}
-                        <span className="text-zinc-500 text-base font-normal leading-normal">
-                          /10
-                        </span>
-                      </p>
-                    </div>
-                    <p className="w-[302px] text-neutral-50 text-[16px] font-normal leading-none">
-                      {m.overview}
-                    </p>
-
-                    <Button className="h-10 px-4 py-4 bg-zinc-100 rounded-md justify-center items-center gap-2 inline-flex text-zinc-900 text-sm font-medium leading-tigh hover:bg-gray-100">
-                      <PlayIcon></PlayIcon> Watch Trailer
-                    </Button>
-                  </div>
-                </div>
+              <CarouselItem key={`path${index}`}>
+          <Slide movie={m} ></Slide>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="relative absolute left-[30px]" />
-          <CarouselNext className="relative absolute right-[30px]" />
+          <CarouselPrevious className="absolute left-12 top-1/2 -translate-y-1/2" />
+          <CarouselNext className="absolute right-12 top-1/2 -translate-y-1/2" />
         </Carousel>
       </div>
 
-      <div className="w-[640px] sm:w-[1440px] relative flex-col justify-start items-start gap-4 inline-flex mb-12">
+      <div className="w-full xl:w-[1440px] relative flex-col justify-start items-start gap-4 inline-flex mb-12">
         <Poster
           moviee={movie.movieUpcoming}
           GenreName="Upcoming"
