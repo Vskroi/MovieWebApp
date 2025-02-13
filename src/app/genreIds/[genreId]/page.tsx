@@ -25,7 +25,7 @@ export default function Home() {
   const [selected, setselected] = useState<string[]>([]);
   const [titles, setTitles] = useState<number>();
   const [totalPage, setTotalPage] = useState<number>(1);
-console.log(totalPage)
+
   const fetchGenres = async () => {
     try {
       const response = await fetch(

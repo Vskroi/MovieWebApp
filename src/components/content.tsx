@@ -128,8 +128,10 @@ export const Content = ({ MovieDetail }: ContentProps) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-12 top-1/2 -translate-y-1/2" />
+          <div className="hidden xl:block">
+          <CarouselPrevious className=" absolute left-12 top-1/2 -translate-y-1/2" />
           <CarouselNext className="absolute right-12 top-1/2 -translate-y-1/2" />
+          </div>
         </Carousel>
       </div>
 

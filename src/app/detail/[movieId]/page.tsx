@@ -131,8 +131,8 @@ export default function Home() {
   return (
     <>
       <Header setStep={setStep}></Header>
-      <div className="w-full h-fit inline-flex flex-col justify-center items-center p-8 bg-white rounded-lg shadow-lg">
-        <div className="h-[72px] w-[1080px] pr-3 justify-between items-center inline-flex">
+      <div className="w-full h-fit inline-flex flex-col justify-center items-center lg:p-8 bg-white rounded-lg shadow-lg">
+        <div className="h-[72px] w-full xl:w-[1080px] pr-3 justify-between items-center inline-flex">
           <div className="w-fit flex-col justify-start items-start gap-1 inline-flex">
             <div className="text-zinc-950 text-4xl font-bold leading-10">
               {selectedMovie.original_title}
@@ -170,20 +170,25 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-[1080px]  flex justify-between">
-          <img
-            className="w-[290px] h-[428px] object-cover mb-4"
-            src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
-          />
-
+      
+        <div className="w-full xl:w-[1080px] lg:flex flex-row-reverse justify-between">
           <iframe
-            className="w-[760px] h-[428px]"
+            className="w-full lg:w-[760px] h-[428px]"
             src={`https://www.youtube.com/embed/${trailer}`}
             frameBorder="0"
             allowFullScreen
           ></iframe>
+          <div className="w-full lg:w-[290px] flex flex lg:block">
+             <img 
+            className="w-[100px] h-[148px] lg:w-[290px] lg:h-[428px] p-4 object-cover mb-4"
+            src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
+          />
+            <div className="self-stretch text-zinc-950 text-base font-normal leading-normal block lg:hidden">
+            {selectedMovie.overview}
+          </div>
+          </div>
         </div>
-        <div className="w-[1080px] h-[271px] flex-col justify-start items-start gap-5 inline-flex">
+        <div className="w-full p-4 xl:w-[1080px] h-[271px] flex-col justify-start items-start gap-5 inline-flex">
           <div className="flex gap-5">
             {movieGenres.map((g, index) => (
               <Link
@@ -200,11 +205,11 @@ export default function Home() {
             ))}
           </div>
           <div className="justify-start items-center gap-3 inline-flex"></div>
-          <div className="self-stretch text-zinc-950 text-base font-normal leading-normal">
+          <div className="self-stretch text-zinc-950 text-base font-normal leading-normal hidden lg:block">
             {selectedMovie.overview}
           </div>
 
-          <div className="self-stretch h-[163px] flex-col justify-start items-start gap-5 flex">
+          <div className="p-4 self-stretch h-[163px] flex-col justify-start items-start gap-5 flex">
             <div className="self-stretch h-[41px] flex-col justify-start items-start gap-1 flex">
               <div className="self-stretch justify-start items-center gap-[53px] inline-flex">
                 <div className="text-zinc-950 text-base font-bold leading-7">
@@ -252,7 +257,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-[1080px] h-[440.38px] flex-col justify-start items-start gap-8 inline-flex overflow-hidden">
+        <div className="p-4 w-full xl:w-[1080px] h-[480px] lg:h-[440.38px] flex-col justify-start items-start gap-8 inline-flex overflow-hidden">
           <div className="self-stretch justify-between items-start inline-flex">
             <div className="w-[198px] text-zinc-950 text-2xl font-semibold leading-loose">
               More like this
@@ -264,15 +269,17 @@ export default function Home() {
               <div className="w-4 h-4 relative  overflow-hidden"></div>
             </div>
           </div>
-          <div className="w-[1080px] flex justify-start items-start relative inline-flex justify-between">
+          <div className="w-full xl:w-[1080px]  flex justify-start items-start overflow-hidden relative inline-flex justify-between">
+          <div className="overflow-x-auto h-[372.38px]">
+          <div className="grid grid-cols-3  gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {similarMovies.slice(0, 5).map((m, index) => (
               <Link
                 href={`/detail/${m.id}`}
                 key={`$similarMovie${index}`}
-                className="w-[190px] h-[372.38px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
+                className="w-full xl:w-[190px]  h-[372.38px] bg-zinc-100 rounded-lg flex-col justify-start items-start gap-1 inline-flex overflow-hidden"
               >
                 <img
-                  className="w-[190px] h-[281.38px] relative"
+                  className="w-full xl:w-[190px] h-[281.38px] relative"
                   src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
                   alt={m.title}
                 />
@@ -306,6 +313,8 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+              </div>
+              </div>
           </div>
         </div>
       </div>

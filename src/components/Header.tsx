@@ -6,15 +6,10 @@ import Link from "next/link";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useTheme } from "next-themes";
 
-
-
 import React from "react";
 import { DarkModeButton } from "./layout/header/darkModeButton";
 import { ChevronDown, Search, SearchCheck } from "lucide-react";
 import { SearchInput } from "./search";
-
-
-
 
 export const Header = ({ setStep }: HeaderProps) => {
   const [isActiveSearch, setIsActiveSearch] = useState(false);
@@ -34,9 +29,6 @@ export const Header = ({ setStep }: HeaderProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState("");
-
-
-  
 
   const toggleGenreSearch = () => {
     setHeaderData((prev) => ({
@@ -67,10 +59,7 @@ export const Header = ({ setStep }: HeaderProps) => {
   useEffect(() => {
     fetchGenres();
     handleSearchMovie(searchValue);
- 
   }, []);
-
-
 
   const moviegenre = async () => {
     try {
@@ -125,37 +114,45 @@ export const Header = ({ setStep }: HeaderProps) => {
   return (
     <>
       <div
-        className={` ${isDark ? "bg-black" : "bg-white" } w-full h-[59px] px-4 justify-between inline-flex flex-col justify-center items-center sticky top-[0px] z-10`}
-
+        className={` ${
+          isDark ? "bg-black" : "bg-white"
+        } w-full h-[59px] px-8 justify-between inline-flex flex-col justify-center items-center relaive sticky top-[0px] z-10`}
       >
-  
-        <div className="flex w-full xl:w-[1440px] h-full inline-flex justify-between items-center gap-2 ">
-          <Link  
-          href={`/`}
-          className="h-5 justify-start items-center gap-2 inline-flex">
+        <div className="flex w-full relative h-full inline-flex sm:justify-between items-center gap-2 ">
+          <Link
+            href={`/`}
+            className="h-5 justify-start items-center gap-2 inline-flex"
+          >
             <img src="../film.svg" alt="Logo" />
             <p className="text-indigo-700 text-base font-bold leading-tight tracking-tight">
               Movie Z
             </p>
           </Link>
-          <div className="flex inline-flex justify-between items-center">
-          <Button
-            className={`w-[97px] mr-[30px] h-9 px-4 py-2 ${isDark ? "bg-black text-white" : "bg-white text-black" } rounded-md shadow-xl border border-[#e3e3e7] justify-center items-center gap-2 inline-flex hover:bg-gray-100`}
-            onClick={toggleGenreSearch}
-          >
 
-            <ChevronDown></ChevronDown>
-            Genre
-          </Button>
-       
-     
-          <SearchInput  onChange={onSearchValueChange}
-            value={searchValue}
-            isActiveSearch={isActiveSearch}
-            setIsActiveSearch={setIsActiveSearch}/>
+          <div className="flex inline-flex justify-between  items-center ml-[60%] sm:ml-[0px]">
+            <div className="hidden sm:block">
+              <Button
+                className={`w-[97px] mr-[30px] h-9 px-4 py-2 ${
+                  isDark ? "bg-black text-white" : "bg-white text-black"
+                } rounded-md shadow-xl border border-[#e3e3e7] justify-center items-center gap-2 inline-flex hover:bg-gray-100
+            
+              `}
+                onClick={toggleGenreSearch}
+              >
+                <ChevronDown />
+                Genre
+              </Button>
+            </div>
+            <SearchInput
+              onChange={onSearchValueChange}
+              value={searchValue}
+              isActiveSearch={isActiveSearch}
+              setIsActiveSearch={setIsActiveSearch}
+            />
+             
           </div>
-
-  <DarkModeButton></DarkModeButton>
+          <DarkModeButton ></DarkModeButton>
+        
         </div>
         {headerData.ganreSearch && (
           <div className="w-[577px] h-[333px] p-5 bg-white rounded-lg border border-[#e3e3e7] flex-col justify-start items-start inline-flex">
@@ -173,9 +170,8 @@ export const Header = ({ setStep }: HeaderProps) => {
             <div className="h-[200px] w-[577px] justify-start items-start gap-4 inline-flex flex-wrap">
               {genres.map((genre) => (
                 <Link
-                href={`/genreIds/${genre.id}`}
+                  href={`/genreIds/${genre.id}`}
                   key={genre.id}
-          
                   className="pl-2.5 pr-1 py-0.5 rounded-full border border-[#e3e3e7] justify-center items-center gap-2 flex cursor-pointer hover:bg-gray-100 bg-white"
                 >
                   <div className="text-zinc-950 text-xs font-semibold leading-none">
@@ -188,7 +184,6 @@ export const Header = ({ setStep }: HeaderProps) => {
                 </Link>
               ))}
             </div>
-            
           </div>
         )}
 
@@ -211,27 +206,23 @@ export const Header = ({ setStep }: HeaderProps) => {
                     />
 
                     <div className="grow flex-col justify-start items-start gap-3">
-                    
-                        <div className="text-zinc-950 w-[350px] text-xl font-semibold leading-7 truncate .break-words self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
-                          {m.original_title}
-                        </div>
-                 
+                      <div className="text-zinc-950 w-[350px] text-xl font-semibold leading-7 truncate .break-words self-stretch h-[51px] flex-col justify-start items-start flex gap-2">
+                        {m.original_title}
+                      </div>
 
-
-                        <div className="flex items-center gap-2.5 self-stretch h-[23px] flex items-center justify-start gap-3">
-                          <img
-                            src="../star.png"
-                            alt="star icon"
-                            className="w-4 h-4 text-yellow-500"
-                          />
-                          <span className="text-zinc-950 text-xl font-medium leading-tight">
-                            {m.vote_average.toString().slice(0, 3)}
-                          </span>
-                          <span className="text-zinc-500 text-xs font-normal leading-none">
-                            /10
-                          </span>
-                        </div>
-            
+                      <div className="flex items-center gap-2.5 self-stretch h-[23px] flex items-center justify-start gap-3">
+                        <img
+                          src="../star.png"
+                          alt="star icon"
+                          className="w-4 h-4 text-yellow-500"
+                        />
+                        <span className="text-zinc-950 text-xl font-medium leading-tight">
+                          {m.vote_average.toString().slice(0, 3)}
+                        </span>
+                        <span className="text-zinc-500 text-xs font-normal leading-none">
+                          /10
+                        </span>
+                      </div>
 
                       <div className="self-stretch flex justify-between items-start gap-3">
                         <div className="text-zinc-950 text-xl font-medium leading-tight">

@@ -24,6 +24,7 @@ type Genre = {
   type Movie = {
     original_title: string;
     poster_path: string;
+    backdrop_path:string
     title: string;
     overview: string;
     vote_average: number;
@@ -43,6 +44,16 @@ type Genre = {
       name: string;
     };
   };
+  type movieNowPlaying ={
+    original_title: string;
+  poster_path: string;
+  title: string;
+  overview: string;
+  vote_average: number;
+  id:number;
+  genre_ids: number[];
+  backdrop_path:string;
+  }
   type allMovie = {
     moviePopular
     :{
@@ -63,16 +74,7 @@ type Genre = {
     id:number;
     genre_ids: number[];
     }[],
-    movieNowPlaying:{
-      original_title: string;
-    poster_path: string;
-    title: string;
-    overview: string;
-    vote_average: number;
-    id:number;
-    genre_ids: number[];
-    backdrop_path:string;
-    }[],
+    movieNowPlaying: movieNowPlaying[]
     movieTopRated:{
       original_title: string;
       poster_path: string;
