@@ -94,7 +94,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
       setLoading(false);
     }
   };
-
+  if(typeof window !== 'undefined'){
   useEffect(() => {
     const storedData = localStorage.getItem("selectedMovieId");
     if (storedData) {
@@ -102,7 +102,7 @@ export const Content = ({ MovieDetail }: ContentProps) => {
       setSelectedMovieId(parsedData);
     }
   }, []);
-
+  }
   useEffect(() => {
     movieNowPlayingContent();
     movieUpcoming();

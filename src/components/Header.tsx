@@ -99,12 +99,14 @@ export const Header = ({ setStep }: HeaderProps) => {
       console.error(error);
     }
   };
+  if(typeof window !== 'undefined'){
   useEffect(() => {
     if (movie.length === 0) {
       const jsonData = JSON.stringify(1);
       localStorage.setItem("genre", jsonData);
     }
   }, [movie]);
+}
   useEffect(() => {
     if (selectedGenre) {
       moviegenre();
@@ -129,8 +131,8 @@ export const Header = ({ setStep }: HeaderProps) => {
             </p>
           </Link>
 
-          <div className="flex inline-flex justify-between  items-center ml-[60%] sm:ml-[0px]">
-            <div className="hidden sm:block">
+          <div className="flex inline-flex justify-between  items-center ml-[60%] lg:ml-[0px]">
+            <div className="hidden lg:block">
               <Button
                 className={`w-[97px] mr-[30px] h-9 px-4 py-2 ${
                   isDark ? "bg-black text-white" : "bg-white text-black"
@@ -148,6 +150,7 @@ export const Header = ({ setStep }: HeaderProps) => {
               value={searchValue}
               isActiveSearch={isActiveSearch}
               setIsActiveSearch={setIsActiveSearch}
+              onClick={toggleGenreSearch}
             />
              
           </div>

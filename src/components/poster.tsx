@@ -10,34 +10,9 @@ export const Poster = ({
   PageName,
   MovieDetail,
 }: PosterProps) => {
-  const { setTheme, theme } = useTheme();
+  const {  theme } = useTheme();
   const isDark = theme === "dark";
-  const key = "115ff36ff2575f01537accc67c1e0fa8";
-  const [genres, setGenres] = useState<Genre[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
-  const fetchGenres = async () => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=en`
-      );
-      const result = await response.json();
-      setGenres(result.genres);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    fetchGenres();
-    const storedData = localStorage.getItem("selectedMovieId");
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setSelectedMovieId(parsedData);
-    }
-  }, []);
   /*   const selectedMovie = moviee.find((m) => m.id === selectedMovieId);
 
   const movieGenres = selectedMovie
@@ -70,8 +45,8 @@ export const Poster = ({
           </Link>
         </div>
         <div className="w-full xl:w-[1440px] justify-center items-center relative flex gap-6 xl:block">
-          <div className="w-full xl:w-[1440px] block xl:flex justify-start items-start relative xl:inline-flex xl:justify-between xl:mb-20 ml-[28px] xl:ml-[0px]">
-            {moviee.slice(0, 5).map((m, index) => (
+          <div className="w-full xl:w-[1440px] block  justify-start items-start relative  xl:justify-between xl:mb-20 mx-[28px] xl:mx-[0px] grid gap-4 grid-cols-2  md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {moviee.slice(0, 10).map((m, index) => (
               <Link
                 key={index}
                 href={`/detail/${m.id}`}
@@ -115,51 +90,7 @@ export const Poster = ({
               </Link>
             ))}
           </div>
-          <div className=" w-full xl:w-[1440px block xl:flex justify-between mr-[28px] xl:mr-[0px]">
-            {moviee.slice(5, 10).map((m, index) => (
-                  <Link
-                  key={index}
-                  href={`/detail/${m.id}`}
-                  className={`h-[439px]  ${
-                    isDark ? "bg-black text-white" : "bg-zinc-100 text-zinc-950"
-                  } rounded-lg flex-col justify-start items-start gap-1 xl:inline-flex overflow-hidden`}
-                >
-                  <img
-                    className="w-full h-[340px] rounded-lg relative"
-                    src={`https://image.tmdb.org/t/p/original/${m.poster_path}`}
-                    alt={m.title}
-                  />
-                  <div className="self-stretch h-[95px] p-2 flex-col justify-start items-start flex">
-                    <div className="self-stretch h-[23px] justify-start items-start gap-1 inline-flex">
-                      <div className="h-[18px] pt-0.5 justify-start items-center gap-2.5 flex">
-                        <div className="h-4 relative overflow-hidden"></div>
-                      </div>
-                      <div className="grow shrink basis-0 self-stretch justify-start items-start flex">
-                        <div className="flex">
-                          <img
-                            className="h-[20px]"
-                            src="../star.png"
-                            alt="star"
-                          />
-                          <span className="text-xl font-medium leading-tight">
-                            {m.vote_average.toString().slice(0, 3)}
-                          </span>
-                          <span className="text-zinc-500 font-normal leading-none">
-                            /10
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="self-stretch justify-center items-center gap-2.5 inline-flex">
-                      <div className="grow shrink basis-0 text-lg font-normal leading-7 .break-words ">
-                        {m.original_title}
-                        <br />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-            ))}
-          </div>
+     
         </div>
       </div>
     </>
