@@ -1,9 +1,9 @@
 import { GenreContent } from "./genreContent";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ThemeProvider } from "@/components/ThemeProvider";
+
 import { useTheme } from "next-themes";
 
 import React from "react";
@@ -61,23 +61,6 @@ export const Header = ({ setStep }: HeaderProps) => {
     handleSearchMovie(searchValue);
   }, []);
 
-  const moviegenre = async () => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en&with_genres=${selectedGenre}&page=1`
-      );
-      const result = await response.json();
-
-      setHeaderData((prev) => ({
-        ...prev,
-        movies: result.results,
-      }));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSearchMovie = async (query: string) => {
     if (!query.trim()) return;
@@ -107,12 +90,10 @@ export const Header = ({ setStep }: HeaderProps) => {
     }
   }, [movie]);
 }
-  useEffect(() => {
-    if (selectedGenre) {
-      moviegenre();
-    }
-  }, [selectedGenre]);
 
+if (loading) {
+  return
+}
   return (
     <>
       <div

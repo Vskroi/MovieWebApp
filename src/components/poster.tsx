@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+
 import { useTheme } from "next-themes";
 import { ArrowRight } from "lucide-react";
 
 export const Poster = ({
   moviee,
   GenreName,
-  PageName,
-  MovieDetail,
 }: PosterProps) => {
   const {  theme } = useTheme();
   const isDark = theme === "dark";

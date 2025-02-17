@@ -25,7 +25,6 @@ export const Content = ({ MovieDetail }: ContentProps) => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
-  const [trailer, setTrailer] = useState<string | null>(null);
   const movieNowPlayingContent = async () => {
     try {
       const response = await fetch(

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-import { fetchData } from "@/utils";
+
 import { useTheme } from "next-themes";
 import { PlayIcon } from "lucide-react";
 
